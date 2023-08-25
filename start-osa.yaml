@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  version: '1.1.0'
+  title: Testing OSA
+  description: >
+    This is Description
+  termsOfService: https://example.com/terms
+  contact: 
+    name: Abu Taher
+    url: https://example.com
+    email: abutaher267@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://apache.com
+    
+servers:
+- url: https://http/v1
+  description: Development server
+  
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      description: This is health endpoing
+      responses:
+        '200':
+          description: return a success message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+        "500":
+          description: ServeR ErroR OccareD
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Server is down

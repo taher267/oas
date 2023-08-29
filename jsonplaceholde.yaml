@@ -1,0 +1,210 @@
+openapi: 3.0.0
+# https://github.com/mrhm-dev/full-stack-army/blob/master/demo/my-blog-api/swagger.yaml
+info:
+  version: 1.0.0
+  title: OAS for JSON Placeholder
+  description: OAS Practie
+  termsOfService: 'http://jsonplaceholder.com/terms'
+  contact:
+    name: Abu Taher
+    url: 'http://github.com/taher267'
+    email: 'abutaher267@gmail.com'
+  license:
+    name: 'Taher Abu'
+    url: 'http://taher'
+
+servers:
+  - url: 'https://jsonplaceholder.typicode.com'
+    description: 'Prod'
+
+tags:
+  - name: Todos
+    description: This is Authentication(public)
+  - name: Posts
+    description: This is Authentication(public)
+  - name: Users
+    description: This is Authentication(public)
+  - name: Auth
+    description: This is Authentication(public)
+paths:
+  /todos:
+    get:
+      tags:
+        - Todos
+      description: 'Get All Todos'
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: string
+          description: The number of items to skip before starting to collect the result set
+      responses:
+        '200':
+          description: 'Return array of Object'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    userId:
+                      type: integer
+                      format: int32
+                      example: 1
+                    id:
+                      type: integer
+                      format: int32
+                      example: 1
+                    title:
+                      type: string
+                      example: 'delectus aut autem'
+                    example:
+                      type: boolean
+                      example: false
+
+  /todos/{id}:
+    get:
+      tags:
+        - Todos
+      description: 'Get All Todos'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      tags: [Users]
+      description: 'get all users'
+      responses:
+        '200':
+          description: 'return all users'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      format: int32
+                      example: 1
+                    'name':
+                      type: string
+                      example: 'Leanne Graham'
+                    'username':
+                      type: string
+                      example: 'Bret'
+                    'email':
+                      type: string
+                      example: 'Sincere@april.biz'
+                    'address':
+                      type: object
+                      properties:
+                        'street':
+                          type: string
+                          example: 'Kulas Light'
+                        'suite':
+                          type: string
+                          example: 'Apt. 556'
+                        'city':
+                          type: string
+                          example: 'Gwenborough'
+                        'zipcode':
+                          type: string
+                          example: '92998-3874'
+                        'geo':
+                          type: object
+                          properties:
+                            'lat':
+                              type: integer
+                              format: int64
+                              example: '-37.3159'
+                            'lng':
+                              type: integer
+                              format: int64
+                              example: '81.1496'
+                    'phone':
+                      type: string
+                      example: '1-770-736-8031 x56442'
+                    'website':
+                      type: string
+                      example: 'hildegard.org'
+                    company:
+                      type: object
+                      properties:
+                        'name':
+                          type: string
+                          example: 'Romaguera-Crona'
+                        'catchPhrase':
+                          type: string
+                          example: 'Multi-layered client-server neural-net'
+                        'bs':
+                          type: string
+                          example: 'harness real-time e-market'
+
+  /posts:
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Posts]
+      description: 'Create a new post'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                title:
+                  type: string
+                body:
+                  type: string
+              required:
+                - userId
+                - title
+                - body
+            # examples:
+            #   "0":
+            #     value: "{\r\n    \"userId\":\"xyz\",\r\n    \"title\":\"XXXXXXX\",\r\n    \"body\":\"*******\"\r\n}"
+            example: "{\r\n    \"userId\":1,\"title\":\"title\",\"body\":\"body\"}"
+
+      responses:
+        201:
+          $ref: '#/components/responses/201'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Id:
+      type: integer
+      description: 'a unique reference to identify a todo'
+      example: 1
+  responses:
+    '201':
+      description: 'Return a new post'
+      content: &content_resp
+        application/json:
+          schema:
+            type: object
+            example:
+              'userId': 000
+              'id': 101
+              'title': 'title'
+              body: 'body'
+    '200':
+      description: 'Return a Object'
+      content: *content_resp
